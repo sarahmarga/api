@@ -1,0 +1,115 @@
+<SCRIPT language="JavaScript">
+<!--
+function ControleVide1()
+{
+if((document.Formulaire.id.value=='') || (document.Formulaire.nom.value==''))
+{
+alert('Veuillez remplir tous les champs obligatoires SVP !');
+
+}
+else
+{
+document.Formulaire.method = "POST";
+document.Formulaire.action = "{{url_for('service_api')}}";
+document.Formulaire.submit();
+}
+}
+  
+function ControleVide2()
+{
+if(document.Formulaire.nom.value=='')
+{
+alert('Veuillez remplir tous les champs obligatoires svp!');
+
+}
+else
+{
+document.Formulaire.method = "POST";
+document.Formulaire.action = "/updateservice?__METHOD_OVERRIDE__=PUT";
+document.Formulaire.submit();
+}
+}
+
+ 
+//-->
+</script>
+
+
+{% extends "layout.html" %}
+ {% block content %}
+<div id="container" class="holder"> 
+        <div id="column-one" class="even-height">
+<h2 id="banner" align=center> LISTES DES SERVICES</h2>
+              <table border=1 > 
+                    <tr>
+		      <td ><B id="banner"> ID</B></td>
+                      <td ><B id="banner">Name</B></td>
+                      
+                    </tr> 
+               {% for service in SERVICES:  %}
+                     <tr>
+		     <td ><a href="{{url_for('service_api')}}{{service['id']}}">{{service['id']}}</td>
+                     <td >{{service['name']}}</td>
+                     </tr>
+                    {% endfor %}
+ 
+              </table>
+        </div>
+
+<div id="column-two" class="even-height">
+   {% if not service:%}
+            <h2 id="banner" align=center>Enregistrer un nouveau Service</H2>
+            <Form name="Formulaire" >
+               <table border=1  >                   
+                <tr >
+                <td>Name* : </td><td><input  type="text" name="nom" > </td>
+                </tr>
+                <tr >
+                <td>Description En Francais : </td><td><textarea name="description_fr" > </textarea></td>
+                </tr>
+<tr >
+                <td>Description En Anglais : </td><td><textarea name="description_ang" > </textarea></td>
+                </tr>
+                <tr >
+                <td>Batiment : </td><td><input  type="text" name="building" > </td>
+                </tr>
+                <tr > 
+                <td> 
+               <input type="submit" value="Valider" name="valider" onClick="ControleVide1()"></td>
+               </tr>
+               </table>
+     </form>
+
+{% else %}
+{% for service in service:  %}
+<h2 id="banner" align=center>modifier un service</H2>
+             <Form name="Formulaire" >
+		<input type="hidden" name="service_id" value={{service['id']}}>
+        <table border=1> 
+          <tr >
+            <td>ID : </td><td><a name="id" value={{service['id']}} >{{service['id']}}</td>
+                </tr>
+                <tr >
+                <td>Nom* : </td><td><input  type="text" name="nom" value={{service['name']}}></td>
+                </tr>
+                <tr >
+                <td>Description En Francais : </td><td><textarea name="description_fr" >{{service['description_FR']}}</textarea></td>
+                </tr>
+                <tr >
+                <td>Description En Anglais : </td><td><textarea name="description_ang" >{{service['description_AN']}}</textarea></td>
+                </tr>
+                <tr >
+                <td>Batiment : </td><td><input  type="text" name="building" value={{service['building']}}></td>
+                </tr>
+                 <tr >
+ <td><input type="submit" value="Valider" name="valider" onClick="ControleVide2()">
+                </td></tr>
+         </table> 
+         <a href="{{ url_for('deleteservice', service_id = service['id']) }}">supprimer ce service </a>
+{% endfor %}
+ {% endif %}
+
+        </div>
+
+     </form>  
+  {% endblock %}
