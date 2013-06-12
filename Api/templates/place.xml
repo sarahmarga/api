@@ -1,0 +1,20 @@
+{% block content %}
+<?xml version="1.0" encoding="UTF-8"?>
+<place>
+<item>
+
+  <reussite>{{reussite}}</reussite>
+
+
+
+{% for place in place:  %}
+ 
+	<id>{{place['id']}}</id>
+
+	<nom_lieu>{{place['name']}}</nom_lieu>
+	<description_fr>{{place['description_FR']}}</description_fr>
+	<description_an>{{place['description_AN']}}</description_an>
+{% endfor %}
+</item>
+</place>
+  {% endblock %}
