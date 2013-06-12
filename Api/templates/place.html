@@ -1,0 +1,25 @@
+{% block content %}
+<?xml version="1.0" encoding="UTF-8"?>
+<person>
+<item>
+  <reussite>{{reussite}}</reussite>
+{% for person in person:  %}
+         
+
+	<id>{{person['id']}}</id>
+
+	<nom_person>{{person['name']}}</nom_person>  
+
+	<prenom_person>{{person['firstname']}}</prenom_person>
+
+	<fonction_person>{{person['function']}}</fonction_person>
+
+	<nom_lieu>{{person['bureau']}}</nom_lieu>
+
+	<telephone_person>{{person['phone']}}</telephone_person>
+
+	<email_person>{{person['mail']}}</email_person>
+	
+</item>
+</person>
+  {% endblock %}
