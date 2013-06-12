@@ -1,0 +1,16 @@
+ {% block content %}
+<?xml version="1.0" encoding="UTF-8"?>
+<service>
+<item>
+  <reussite>{{reussite}}</reussite>
+{% for service in service:  %}
+   
+	<id>{{service['id']}}</id>
+
+	<nom_service>{{service['name']}}</nom_service>
+	<description_fr>{{service['description_FR']}}</description_fr>
+	<description_an>{{service['description_AN']}}</description_an>
+
+</item>
+</service>
+ {% endblock %}
