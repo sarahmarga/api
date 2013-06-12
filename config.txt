@@ -1,0 +1,19 @@
+steps to config apache (/etc/httpd/conf/httpd.conf), creating d'un virtualhost : 
+
+WSGISocketPrefix /var/run/wsgi  (source :  http://jake.murzy.com/post/2992010793/installing-and-setting-up-mercurial-rhel-centos-apache ) 
+
+<VirtualHost _default_:80> 
+    ServerName visite.ensta-bretagne.fr 
+    Alias /log "/webperso/visiteaug/api/" 
+    WSGIDaemonProcess api user=apache group=apache threads=5 
+    WSGIScriptAlias / /webperso/visiteaug/api/api.wsgi 
+    ErrorLog /var/log/visite.error.log 
+    #CustomLog /var/log/visite.access.log combined 
+    <Directory /webperso/visiteaug/api> 
+        WSGIProcessGroup api 
+        WSGIApplicationGroup %{GLOBAL} 
+        Order deny,allow 
+        Allow from all 
+        Options Indexes 
+    </Directory> 
+</VirtualHost> 
