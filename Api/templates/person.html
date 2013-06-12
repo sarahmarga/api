@@ -1,0 +1,142 @@
+<SCRIPT language="JavaScript">
+<!--
+function ControleVide1()
+{
+if((document.Formulaire.nom.value=='') || (document.Formulaire.prenom.value=='') || (document.Formulaire.fonction.value=='') || (document.Formulaire.bureau.value==''))
+{
+alert('Veuillez remplir tous les champs obligatoires SVP!');
+}
+else
+{
+document.Formulaire.method = "POST";
+document.Formulaire.action = "{{url_for('person_api')}}";
+document.Formulaire.submit();
+}
+}
+  
+function ControleVide2()
+{
+if((document.Formulaire.nom.value=='') || (document.Formulaire.prenom.value=='') || (document.Formulaire.fonction.value=='') || (document.Formulaire.bureau.value==''))
+{
+alert('Veuillez remplir tous les champs obligatoires svp!');
+}
+else
+{
+document.Formulaire.method = "POST";
+document.Formulaire.action = "/updateperson?__METHOD_OVERRIDE__=PUT";
+document.Formulaire.submit();
+}
+}
+
+ 
+function redirection()
+{
+
+document.Formulaire.method = "POST";
+document.Formulaire.action = "Choix.html";
+document.Formulaire.submit();
+document.Formulaire.submit();
+}
+//-->
+</script>
+
+
+
+
+{% extends "layout.html" %}
+ 
+{% block content %}
+
+<div id="container" class="holder"> 
+        <div id="column-one" class="even-height">
+            <h2 id="banner" align=center> LISTES DU PERSONNEL</h2>
+              <table border=1 > 
+                    <tr>
+		      <td ><B id="banner"> ID</B></td>
+                      <td ><B id="banner">Noms</B></td>
+                      <td ><B id="banner"> Prenoms</B></td>                    
+                    </tr> 
+                   {% for personne in PEOPLE:  %}
+                    <tr>
+		     <td ><a href="{{url_for('person_api')}}{{personne['id']}}">{{personne['id']}}</td>
+                     <td >{{personne['name']}}</td>
+                     <td >{{personne['firstname']}}</td>
+                    </tr>
+                   {% endfor %}
+ 
+              </table>
+        </div>
+        <div id="column-two" class="even-height">
+            {% if not person:%}
+            <h2 id="banner" align=center>Enregistrer une nouvelle personne</H2>
+              <Form name="Formulaire"  >
+			
+                <table border=1  >                     
+                <tr >
+                <td>Nom* : </td><td><input  type="text" name="nom" > </td>
+                </tr>
+                <tr >
+                <td>Prenom* : </td><td><input  type="text" name="prenom" ></td>
+                </tr>
+                <tr >
+                <td>Fonction* : </td><td><input  type="text" name="fonction" ></td>
+                </tr>
+                <tr >
+                <td>Bureau* : </td><td><input type="text" name="bureau" ></td>
+                </tr>
+                <tr >
+                <td>Telephone : </td><td><input type="text" name="telephone"></td>
+                </tr>
+                <tr >
+                <td>Email : </td><td><input  type="text" name="email"></td>
+                </tr>
+
+               <tr > 
+                <td> 
+               <input type="submit" value="Valider" name="valider" onClick="ControleVide1()"></td>
+               </tr>
+</table>
+
+</form>
+
+{% else %}
+{% for person in person:  %}
+        <h2 id="banner" align=center>modifier une personne</H2>
+              <Form name="Formulaire" >
+	
+   		<input type="hidden" name="person_id" value={{person['id']}}>
+        <table border=1> 
+           <tr >
+            <td>ID : </td><td><a name="id" value={{person['id']}} >{{person['id']}} </td>
+                </tr>
+          <tr >
+            <td>Nom* : </td><td><input  type="text" name="nom" value={{person['name']}}> </td>
+                </tr>
+                <tr >
+                <td>Prenom* : </td><td><input  type="text" name="prenom" value={{person['firstname']}}></td>
+                </tr>
+                <tr >
+                <td>Fonction* : </td><td><input  type="text" name="fonction" value={{person['function']}}></td>
+                </tr>
+                <tr >
+                <td>Bureau* : </td><td><input  type="text" name="bureau" value={{person['bureau']}}></td>
+                </tr>
+                <tr >
+                <td>Telephone : </td><td><input  type="text" name="telephone" value={{person['phone']}}></td>
+                </tr>
+                <tr >
+                <td>Email : </td><td><input  type="text" name="email" value={{person['mail']}}></td>
+                </tr>
+                <tr >
+ <td><input type="submit" value="Valider" name="valider" onClick="ControleVide2()" >
+                </td></tr>
+         </table> 
+
+          <a href="{{ url_for('deleteperson', person_id = person['id']) }}">supprimer cette personne </a>
+{% endfor %}
+ {% endif %}
+
+        </div>
+	</form>
+       
+  {% endblock %}
