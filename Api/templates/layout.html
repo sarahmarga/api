@@ -16,10 +16,12 @@
         </header>
         <div class="menu">
             <ul>
+             	<li><a href="{{ url_for('login')}}">log in</a></li>
                 <li><a href="{{ url_for('about')}}">A propos</a></li>
                 <li><a href="{{url_for('person_api')}}" >Personnes</a></li>
-  	<li><a href="{{ url_for('service_api')}}">services</a></li>
+		<li><a href="{{ url_for('service_api')}}">services</a></li>
 		<li><a href="{{ url_for('place_api')}}">lieux</a></li>
+		<li><a href="{{ url_for('logout') }}">log out</a></li>
 
             </ul>
         </div>
