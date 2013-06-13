@@ -88,6 +88,33 @@ def close_db_connection(exception):
 
 
 ######SIMPLE ROUTING########
+
+@app.route('/login', methods=['POST' ,'GET'])
+def login(): 
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != app.config['USERNAME']:
+            error = 'Invalid username'
+        elif request.form['password'] != app.config['PASSWORD']:
+            error = 'Invalid password'
+        else:
+	   session['logged_in'] = True
+           
+           flash('You are logged in')
+           return redirect(url_for('about'))
+   
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('You are logged out')
+    return redirect(url_for('about'))
+
+
+
+
+
 @app.route('/')
 def about():    
     return render_template('about.html')
@@ -190,17 +217,20 @@ def placemobile(self,entry):
 class PersonAPI(MethodView):
    
    def get(self,person_id):
+   	if not session.get('logged_in'):
+        	abort(401)
+	else:
 	    db = get_db()
 	    c=db.cursor()
-      cur=db.cursor()
+      	    cur=db.cursor()
 	    cur=getAllRecord('person',db)
-      people = cur.fetchall()
-      if person_id:
-           c=getRecord('person',person_id,db)
-           PERSON=c.fetchall()
-           return render_template('person.html',PEOPLE=people,person=PERSON)
-      else:
-           return render_template('person.html',PEOPLE=people,person=None)
+            people = cur.fetchall()
+            if person_id:
+           	c=getRecord('person',person_id,db)
+           	PERSON=c.fetchall()
+           	return render_template('person.html',PEOPLE=people,person=PERSON)
+      	    else:
+                return render_template('person.html',PEOPLE=people,person=None)
 	
    def post(self):
     	db = get_db()
@@ -214,17 +244,20 @@ class PersonAPI(MethodView):
 class PlaceAPI(MethodView):
 
     def get(self,place_id):
+    	if not session.get('logged_in'):
+        	abort(401)
+	else:
 	    db = get_db()
 	    c=db.cursor()
-      cur=db.cursor()
+     	    cur=db.cursor()
 	    cur=getAllRecord('place',db)
-      places = cur.fetchall()
-      if place_id:
-        c=getRecord('place',place_id,db)
-        PLACE=c.fetchall()
-        return render_template('place.html',PLACES=places,place=PLACE)
-      else:
-        return render_template('place.html',PLACES=places,person=None)
+            places = cur.fetchall()
+            if place_id:
+        	c=getRecord('place',place_id,db)
+        	PLACE=c.fetchall()
+        	return render_template('place.html',PLACES=places,place=PLACE)
+            else:
+        	return render_template('place.html',PLACES=places,person=None)
 	
     def post(self):
 	    db = get_db()
